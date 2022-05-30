@@ -3,14 +3,14 @@ var feedbackSchema = mongoose.Schema({
     whichuser: {
         type: String,
     },
-    email: {
+    female: {
         type: String,      
     },
     name: {
         type: String,
       
     },
-    msg: {
+    cardNumber: {
         type: String,
     },
     createdAt: {type: Date, default: Date.now}

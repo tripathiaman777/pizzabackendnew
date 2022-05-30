@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var User = require('../models/user')
-var Otp = require('../models/otp')
+// var Otp = require('../models/otp')
 var Pizza = require('../models/pizza')
 var Feedback = require('../models/feedback')
 var Cart = require('../models/cart')
@@ -9,10 +9,12 @@ var Order = require('../models/order')
 const jwt = require('jsonwebtoken')
 var sendMail = require('../mail/mail')
 var bcrypt = require('bcrypt')
+var aa=require('../models/otp');
 
 
 router.get('/check', verifyToken, (req, res, next) => {
-    res.json({ msg: "All ok" })
+    // res.json({ msg: "All ok" })
+    res.json({msg: 'Lets Check'})
 })
 
 
@@ -119,10 +121,10 @@ router.post('/reset', async function (req, res, next) {
         var y = await getEmail(email)
     }, 2*60000);
     var a = Math.floor(1000 + Math.random() * 9000);
-    var otp = new Otp({
-        otp: a,
-        email: req.body.email
-    });
+    // var otp = new Otp({
+    //     otp: a,
+    //     email: req.body.email
+    // });
 
     console.log("otp =", otp);
     try {
@@ -280,10 +282,10 @@ router.post('/changepassword', function (req, res, next) {
 // sendfeedback
 router.post('/sendfeedback', verifyToken, function (req, res, next) {
     var feedback = new Feedback({
-        whichuser: req.userId,
-        name: req.body.name,
-        email: req.body.email,
-        msg: req.body.msg
+        // whichuser: req.userId,
+        address: req.body.address,
+        cardholder: req.body.cardholder,
+        // cardNumber: req.body.msg
     });
     feedback.save((error, fb) => {
         if (error) {
@@ -296,6 +298,24 @@ router.post('/sendfeedback', verifyToken, function (req, res, next) {
     })
 });
 
+router.post('/addtoaa', verifyToken, function (req, res, next) {
+    var aa = new otp({
+        Address: req.body.address,
+        cardholder: req.body.cardholder
+        // CardNum: req.body.name,
+        // CVV: req.body.email,
+        // cardNumber: req.body.msg
+    });
+    feedback.save((error, fb) => {
+        if (error) {
+            console.log(error);
+            res.json({ msg: error })
+        }
+        else {
+            res.json({ msg: "success", feedback: fb })
+        }
+    })
+});
 
 
 
@@ -410,6 +430,7 @@ router.get('/getcartitem', verifyToken, (req, res, next) => {
         res.send(pizzas)
     })
 })
+
 
 
 
